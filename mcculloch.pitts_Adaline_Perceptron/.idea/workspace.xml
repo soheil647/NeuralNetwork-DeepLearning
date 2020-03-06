@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2b5a86c4-8877-4635-ba49-57e3f9b62558" name="Default Changelist" comment="" />
+    <list default="true" id="2b5a86c4-8877-4635-ba49-57e3f9b62558" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ComparePreceptronWithAdaline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FullAdder.py" beforeDir="false" afterPath="$PROJECT_DIR$/FullAdder.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -14,7 +32,12 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
   <component name="ProjectId" id="1Y1pIYtg3uC9EvMxzJatb9rr1WU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -24,7 +47,29 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.ComparePreceptronWithAdaline">
+    <configuration name="ComparePreceptronWithAdaline" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mcculloch.pitts_Adaline_Perceptron" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ComparePreceptronWithAdaline.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="FullAdder" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="mcculloch.pitts_Adaline_Perceptron" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -49,6 +94,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ComparePreceptronWithAdaline" />
         <item itemvalue="Python.FullAdder" />
       </list>
     </recent_temporary>
@@ -67,6 +113,10 @@
       <workItem from="1582121361018" duration="1911000" />
       <workItem from="1582222772167" duration="80000" />
       <workItem from="1582270680944" duration="4845000" />
+      <workItem from="1582295265591" duration="36000" />
+      <workItem from="1583241525475" duration="9986000" />
+      <workItem from="1583312593986" duration="81000" />
+      <workItem from="1583486154771" duration="11351000" />
     </task>
     <servers />
   </component>
@@ -82,32 +132,57 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="771" y="296" width="424" height="513" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1582222838802" />
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom" timestamp="1582288002680">
+    <state width="1807" height="344" key="GridCell.Tab.0.bottom" timestamp="1583505041435">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1582288002680" />
-    <state width="1807" height="278" key="GridCell.Tab.0.center" timestamp="1582288002679">
+    <state width="1807" height="344" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041435" />
+    <state width="1807" height="344" key="GridCell.Tab.0.center" timestamp="1583505041434">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1582288002679" />
-    <state width="1807" height="278" key="GridCell.Tab.0.left" timestamp="1582288002679">
+    <state width="1807" height="344" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041434" />
+    <state width="1807" height="344" key="GridCell.Tab.0.left" timestamp="1583505041432">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1582288002679" />
-    <state width="1807" height="278" key="GridCell.Tab.0.right" timestamp="1582288002680">
+    <state width="1807" height="344" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041432" />
+    <state width="1807" height="344" key="GridCell.Tab.0.right" timestamp="1583505041435">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1582288002680" />
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1582222774595">
+    <state width="1807" height="344" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041435" />
+    <state width="1807" height="344" key="GridCell.Tab.1.bottom" timestamp="1583505041436">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1582222774595" />
+    <state width="1807" height="344" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041436" />
+    <state width="1807" height="344" key="GridCell.Tab.1.center" timestamp="1583505041435">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="344" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041435" />
+    <state width="1807" height="344" key="GridCell.Tab.1.left" timestamp="1583505041435">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="344" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041435" />
+    <state width="1807" height="344" key="GridCell.Tab.1.right" timestamp="1583505041436">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1807" height="344" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041436" />
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1583312605123">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1583312605123" />
+    <state x="610" y="145" width="756" height="815" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1583245176230">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="610" y="145" width="756" height="815" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1583245176230" />
+    <state x="761" y="472" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583496684753">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="761" y="472" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/67.27.1853.1053@67.27.1853.1053" timestamp="1583496684753" />
     <state x="738" y="196" width="501" height="713" key="refactoring.ChangeSignatureDialog" timestamp="1582270953264">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="738" y="196" width="501" height="713" key="refactoring.ChangeSignatureDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1582270953264" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/mcculloch_pitts_Adaline_Perceptron$FullAdder.coverage" NAME="FullAdder Coverage Results" MODIFIED="1582279338684" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mcculloch_pitts_Adaline_Perceptron$FullAdder.coverage" NAME="FullAdder Coverage Results" MODIFIED="1583498813084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mcculloch_pitts_Adaline_Perceptron$ComparePreceptronWithAdaline.coverage" NAME="ComparePreceptronWithAdaline Coverage Results" MODIFIED="1583504372859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
