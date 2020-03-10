@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b5a86c4-8877-4635-ba49-57e3f9b62558" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ComparePreceptronWithAdaline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FullAdder.py" beforeDir="false" afterPath="$PROJECT_DIR$/FullAdder.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,6 +115,7 @@
       <workItem from="1583241525475" duration="9986000" />
       <workItem from="1583312593986" duration="81000" />
       <workItem from="1583486154771" duration="11351000" />
+      <workItem from="1583766185849" duration="37000" />
     </task>
     <servers />
   </component>
@@ -128,10 +127,10 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="726" y="301" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1582121368305" />
-    <state x="771" y="296" width="424" height="513" key="FileChooserDialogImpl" timestamp="1582222838802">
+    <state x="771" y="296" width="424" height="513" key="FileChooserDialogImpl" timestamp="1583766209113">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="771" y="296" width="424" height="513" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1582222838802" />
+    <state x="771" y="296" width="424" height="513" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1583766209113" />
     <state width="1807" height="344" key="GridCell.Tab.0.bottom" timestamp="1583505041435">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
@@ -164,10 +163,10 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state width="1807" height="344" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583505041436" />
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1583312605123">
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1583766188067">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1583312605123" />
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1583766188067" />
     <state x="610" y="145" width="756" height="815" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1583245176230">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
