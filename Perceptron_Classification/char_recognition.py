@@ -40,15 +40,19 @@ def train_weights_perception(train, l_rate, n_epoch):
     for i_epoch in range(n_epoch):
         for row in train:
             # print()
-            sum_error = 0.0
+            # print(weights_vector[0])
+            # print(bias_vector[0])
             for outPutNumber in range(7):
+                sum_error = 0.0
+                # print("Target is: ", row[64 + outPutNumber])
                 prediction = predict_h(row, weights_vector[outPutNumber], bias_vector[outPutNumber])
-                # print(prediction)
+                # print("Predict is: ", prediction)
                 error = prediction - row[64 + outPutNumber]
                 # print(error)
                 sum_error += error ** 2
-            if sum_error != 0:
-                for outPutNumber in range(7):
+                # if sum_error != 0:
+                #     print(sum_error)
+                if sum_error != 0:
                     bias_vector[outPutNumber] = bias_vector[outPutNumber] + l_rate * row[64 + outPutNumber]
                     for j in range(63):
                         weights_vector[outPutNumber][j] = weights_vector[outPutNumber][j] + l_rate * row[64 + outPutNumber] * row[j]
@@ -57,7 +61,7 @@ def train_weights_perception(train, l_rate, n_epoch):
 
 
 epoch = 4
-weights, bias = train_weights_perception(dataset, 0.4, epoch)
+weights, bias = train_weights_perception(dataset, 0.2, epoch)
 print(weights[0])
 print(bias)
 ###############          Enter your code above ...           ##################
@@ -65,10 +69,18 @@ print(bias)
 print("\nThe Neural Network has been trained in " + str(epoch) + " epochs.")
 
 ###############                   Testing                    ##################
-
+test_dataset = np.array(read_train_file("OCR_test.txt"))
 
 ###############          Enter your code below ...           ##################
-
+count = 0
+for row in test_dataset:
+    for outPutNumber in range(7):
+        predict = predict_h(row, weights[outPutNumber], bias[outPutNumber])
+        error = predict - row[64 + outPutNumber]
+        if error != 0:
+            count += 1
+            break
+print(count)
 
 ###############          Enter your code above ...           ##################
 
