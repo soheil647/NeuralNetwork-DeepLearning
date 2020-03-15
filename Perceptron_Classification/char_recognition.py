@@ -19,39 +19,47 @@ def read_train_file(file="OCR_train.txt"):
 
 ###############          Enter your code below ...           ##################
 dataset = np.array(read_train_file())
-print(np.array(dataset).shape)
 # dic = {'name': np.array([item[:63] for item in dataset]).reshape([21, 9, 7]), 'id': [item[63:] for item in dataset]}
-dic = {'name': np.array([item[:63] for item in dataset]), 'id': [item[64:] for item in dataset]}
-print(len(dic['name'][0]))
-print(len(dic['id'][0]))
+# dic = {'name': np.array([item[:63] for item in dataset]), 'id': [item[64:] for item in dataset]}
+# print(dic["id"][0])
 
 
 # Make a prediction with weights
-def predict_h(row, weights):
-    activation = weights[0]
-    for i in range(len(row) - 1):
-        activation += weights[i + 1] * row[i]
+def predict_h(row, out_weight, out_bias):
+    activation = out_bias
+    for j in range(63):
+        activation += out_weight[j] * row[j]
     return 1.0 if activation >= 0.0 else -1.0
 
 
 # Estimate Perceptron weights using stochastic gradient descent
 def train_weights_perception(train, l_rate, n_epoch):
-    weights = [0.0 for i in range(len(train[0]))]
-    for epoch in range(n_epoch):
-        sum_error = 0.0
+    weights_vector = [[0.0 for i in range(63)] for j in range(7)]
+    bias_vector = [0.0 for i in range(7)]
+    sum_error = 0
+    for i_epoch in range(n_epoch):
         for row in train:
-            prediction = predict_h(row, weights)
-            error = row[-1] - prediction
-            if error != 0:
-                # print(">epoch=%d, prediction=%d, error=%d, expected=%d" % (epoch, prediction, error, row[-1]))
+            # print()
+            sum_error = 0.0
+            for outPutNumber in range(7):
+                prediction = predict_h(row, weights_vector[outPutNumber], bias_vector[outPutNumber])
+                # print(prediction)
+                error = prediction - row[64 + outPutNumber]
+                # print(error)
                 sum_error += error ** 2
-                weights[0] = weights[0] + l_rate * row[-1]
-                for i in range(len(row) - 1):
-                    weights[i + 1] = weights[i + 1] + l_rate * row[-1] * row[i]
-        print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
-    return weights
+            if sum_error != 0:
+                for outPutNumber in range(7):
+                    bias_vector[outPutNumber] = bias_vector[outPutNumber] + l_rate * row[64 + outPutNumber]
+                    for j in range(63):
+                        weights_vector[outPutNumber][j] = weights_vector[outPutNumber][j] + l_rate * row[64 + outPutNumber] * row[j]
+        print('>epoch=%d, lrate=%.3f, error=%.3f' % (i_epoch, l_rate, sum_error))
+    return weights_vector, bias_vector
 
 
+epoch = 4
+weights, bias = train_weights_perception(dataset, 0.4, epoch)
+print(weights[0])
+print(bias)
 ###############          Enter your code above ...           ##################
 
 print("\nThe Neural Network has been trained in " + str(epoch) + " epochs.")
@@ -64,4 +72,4 @@ print("\nThe Neural Network has been trained in " + str(epoch) + " epochs.")
 
 ###############          Enter your code above ...           ##################
 
-print("\n\nPercent of Error in NN: " + str(_error / _total))
+# print("\n\nPercent of Error in NN: " + str(_error / _total))
