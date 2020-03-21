@@ -60,7 +60,7 @@ def train_weights_perception(train, l_rate, n_epoch):
     return weights_vector, bias_vector
 
 
-epoch = 4
+epoch = 3
 weights, bias = train_weights_perception(dataset, 0.2, epoch)
 print(weights[0])
 print(bias)
@@ -72,16 +72,17 @@ print("\nThe Neural Network has been trained in " + str(epoch) + " epochs.")
 test_dataset = np.array(read_train_file("OCR_test.txt"))
 
 ###############          Enter your code below ...           ##################
-count = 0
+_error = 0
+_total = 0
 for row in test_dataset:
+    _total += 1
     for outPutNumber in range(7):
         predict = predict_h(row, weights[outPutNumber], bias[outPutNumber])
         error = predict - row[64 + outPutNumber]
         if error != 0:
-            count += 1
+            _error += 1
             break
-print(count)
 
 ###############          Enter your code above ...           ##################
 
-# print("\n\nPercent of Error in NN: " + str(_error / _total))
+print("\n\nPercent of Error in NN: " + str(_error / _total))
