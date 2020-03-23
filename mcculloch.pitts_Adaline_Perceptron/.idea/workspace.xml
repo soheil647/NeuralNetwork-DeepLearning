@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b5a86c4-8877-4635-ba49-57e3f9b62558" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../MLP_Madaline_DimensionalityReduction/.idea/dictionaries/sspc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../MLP_Madaline_DimensionalityReduction/predict_house_price.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MLP_Madaline_DimensionalityReduction/Madaline_Classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MLP_Madaline_DimensionalityReduction/Madaline_Classification.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -116,6 +119,8 @@
       <workItem from="1583312593986" duration="81000" />
       <workItem from="1583486154771" duration="11351000" />
       <workItem from="1583766185849" duration="37000" />
+      <workItem from="1584898426700" duration="15000" />
+      <workItem from="1584956300187" duration="663000" />
     </task>
     <servers />
   </component>
