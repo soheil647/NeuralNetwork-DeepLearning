@@ -41,10 +41,10 @@ def one_layer_network_prediction():
 
     my_model = Sequential()
 
-    my_model.add(Dense(units=10, activation=relu, input_shape=(19,)))
-    my_model.add(Dense(units=1, activation=relu))
+    my_model.add(Dense(units=19, activation=relu, input_shape=(19,)))
+    my_model.add(Dense(units=1))
 
-    my_model.compile(optimizer="Adam", loss=mean_squared_logarithmic_error, metrics=["accuracy"])
+    my_model.compile(optimizer="Adam", loss='MSE', metrics=["accuracy"])
 
     start = datetime.datetime.now()
     my_train = my_model.fit(x=x_train, y=y_train, batch_size=10, epochs=10, validation_split=0.2)
@@ -66,7 +66,7 @@ def one_layer_network_prediction():
     print(history["val_loss"])
 
     plt.legend("loss")
-    plt.plot(history["loss"])
+    plt.plot(history["loss"][5:])
 
 
 def two_layer_network_prediction():
@@ -93,11 +93,11 @@ def two_layer_network_prediction():
 
     my_model = Sequential()
 
-    my_model.add(Dense(units=5, activation=relu, input_shape=(19,)))
-    my_model.add(Dense(units=10, activation=relu))
-    my_model.add(Dense(units=1, activation=relu))
+    my_model.add(Dense(units=10, activation=relu, input_shape=(19,)))
+    my_model.add(Dense(units=10,))
+    my_model.add(Dense(units=1,))
 
-    my_model.compile(optimizer="Adam", loss=mean_squared_logarithmic_error, metrics=["accuracy"])
+    my_model.compile(optimizer="Adam", loss='MSE', metrics=["accuracy"])
 
     my_train = my_model.fit(x=x_train, y=y_train, batch_size=10, epochs=10, validation_split=0.2)
 
@@ -109,14 +109,15 @@ def two_layer_network_prediction():
 
     history = my_train.history
     test_loss, test_acc = my_model.evaluate(x=x_test, y=y_test)
-
+    print("test loss : ", test_loss)
     predicted_labels = my_model.predict(x_test)
+    # print(predicted_labels)
     print(history)
     print(history["loss"])
     print(history["val_loss"])
 
     plt.legend(["loss"])
-    plt.plot(history["loss"])
+    plt.plot(history["loss"][5:])
 
 
 # =============================================================================
