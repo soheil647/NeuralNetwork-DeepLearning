@@ -9,11 +9,11 @@ from keras.activations import softmax
 from keras.losses import sparse_categorical_crossentropy
 
 (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
 x_train = x_train / 255.0
 x_test = x_test / 255.0
 
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 # plt.figure(figsize=(10,10))
 # for i in range(25):
 #     plt.subplot(5,5,i+1)
@@ -24,9 +24,12 @@ x_test = x_test / 255.0
 #     plt.xlabel(class_names[y_train[i]])
 # plt.show()
 
-my_model = Sequential()
+x_train = np.array(x_train).reshape(60000, 28*28)
+x_test = np.array(x_test).reshape(10000, 28*28)
 
-my_model.add(Flatten(input_shape=(28, 28)))
+# print(np.array(x_train).shape)
+
+my_model = Sequential()
 my_model.add(Dense(128, activation='relu'))
 my_model.add(Dense(10, activation=softmax))
 
@@ -56,5 +59,18 @@ plt.legend(['acc', 'val_acc'])
 
 plt.show()
 
-# matrix = tf.math.confusion_matrix(class_names, my_model.predict(x_test))
-# print(matrix)
+from sklearn.metrics import confusion_matrix
+test_prediction = my_model.predict_classes(x_test)
+matrix = confusion_matrix(y_true=y_test, y_pred=test_prediction)
+print("Matrix= ", matrix)
+marks = np.arange(len(class_names))
+cmap = plt.cm.Blues
+title='Confusion matrix'
+plt.figure()
+plt.imshow(matrix, interpolation='nearest', cmap=cmap)
+plt.title(title)
+plt.colorbar()
+plt.xticks(marks, class_names, rotation=45)
+plt.yticks(marks, class_names)
+plt.tight_layout()
+plt.show()

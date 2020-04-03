@@ -44,12 +44,9 @@ def one_layer_network_prediction():
     my_model.add(Dense(units=19, activation=relu, input_shape=(19,)))
     my_model.add(Dense(units=1))
 
-    my_model.compile(optimizer="Adam", loss='MSE', metrics=["accuracy"])
+    my_model.compile(optimizer="Adam", loss='MSE', metrics=['mean_squared_logarithmic_error'])
 
-    start = datetime.datetime.now()
-    my_train = my_model.fit(x=x_train, y=y_train, batch_size=10, epochs=10, validation_split=0.2)
-    end = datetime.datetime.now()
-    Total_time_training = end - start
+    my_train = my_model.fit(x=x_train, y=y_train, batch_size=32, epochs=200, validation_split=0.2)
 
     # =============================================================================
     #
@@ -61,12 +58,24 @@ def one_layer_network_prediction():
     test_loss, test_acc = my_model.evaluate(x=x_test, y=y_test)
 
     predicted_labels = my_model.predict(x_test)
+
+    print(test_loss)
+    print(test_acc)
+    print(predicted_labels)
+
     print(history)
     print(history["loss"])
     print(history["val_loss"])
 
-    plt.legend("loss")
     plt.plot(history["loss"][5:])
+    plt.plot(history["val_loss"][5:])
+    plt.legend(["loss", "val_loss"])
+    plt.show()
+
+    # plt.legend(["acc", "val_acc"])
+    # plt.plot(history["accuracy"][5:])
+    # plt.plot(history["val_accuracy"][5:])
+    # plt.show()
 
 
 def two_layer_network_prediction():
@@ -93,13 +102,13 @@ def two_layer_network_prediction():
 
     my_model = Sequential()
 
-    my_model.add(Dense(units=10, activation=relu, input_shape=(19,)))
-    my_model.add(Dense(units=10,))
+    my_model.add(Dense(units=19, activation='relu', input_shape=(19,)))
+    my_model.add(Dense(units=19, activation='relu'))
     my_model.add(Dense(units=1,))
 
-    my_model.compile(optimizer="Adam", loss='MSE', metrics=["accuracy"])
+    my_model.compile(optimizer="Adam", loss='MSE', metrics=['mean_squared_logarithmic_error'])
 
-    my_train = my_model.fit(x=x_train, y=y_train, batch_size=10, epochs=10, validation_split=0.2)
+    my_train = my_model.fit(x=x_train, y=y_train, epochs=200, validation_split=0.2, )
 
     # =============================================================================
     #
@@ -109,15 +118,21 @@ def two_layer_network_prediction():
 
     history = my_train.history
     test_loss, test_acc = my_model.evaluate(x=x_test, y=y_test)
-    print("test loss : ", test_loss)
+
     predicted_labels = my_model.predict(x_test)
-    # print(predicted_labels)
+
+    print(test_loss)
+    print(test_acc)
+    print(predicted_labels)
+
     print(history)
     print(history["loss"])
     print(history["val_loss"])
 
-    plt.legend(["loss"])
     plt.plot(history["loss"][5:])
+    plt.plot(history["val_loss"][5:])
+    plt.legend(["loss", "val_loss"])
+    plt.show()
 
 
 # =============================================================================
@@ -126,10 +141,10 @@ def two_layer_network_prediction():
 #
 # =============================================================================
 
-start = datetime.datetime.now()
-one_layer_network_prediction()
-end = datetime.datetime.now()
-print(end - start)
+# start = datetime.datetime.now()
+# one_layer_network_prediction()
+# end = datetime.datetime.now()
+# print(end - start)
 
 # =============================================================================
 #
@@ -142,5 +157,5 @@ two_layer_network_prediction()
 end = datetime.datetime.now()
 print(end - start)
 
-plt.legend(["1 layer loss", "2 layer loss"])
-plt.show()
+# plt.legend(["1 layer loss", "2 layer loss"])
+# plt.show()

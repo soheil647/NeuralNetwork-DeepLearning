@@ -15,7 +15,7 @@ plt.plot(Green_x1, Green_x2, "ro")
 plt.plot(Blue_x1, Blue_x2, "yo")
 
 plt.grid()
-# plt.show()
+plt.show()
 dataset_list = []
 for i in range(len(Orange_x1)):
     dataset_list.append([Orange_x1[i], Orange_x2[i], [-1, 1]])
@@ -44,9 +44,6 @@ def find_net(in_data, out_weight, out_bias):
 def train_weights_madaline_mr1(x_in, number_of_layer1_neuron, number_of_and_input, l_rate, n_epoch):
     input_weights_vector = [[0.0 for i in range(len(x_in[0]) - 1)] for j in range(number_of_layer1_neuron)]
     input_bias_vector = [0.0 for i in range(number_of_layer1_neuron)]
-    # print(np.array(input_weights_vector).reshape(7, 2))
-    # for i in range(number_of_layer1_neuron):
-    # print(np.array(input_bias_vector[1]))
     and1_weights_vector = [[1, 1, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 1]]
     and1_bias_vector = [-2, -3]
 
@@ -56,13 +53,10 @@ def train_weights_madaline_mr1(x_in, number_of_layer1_neuron, number_of_and_inpu
     sum_error = 0
     for i_epoch in range(n_epoch):
         for data in x_in:
-            # for out_put_number in range(len(target)):
-            #     predict_layer1_value = []
-            #     sum_error = 0.0
             predict_and_value = []
             activation_layer1 = []
             for neuron_layer1_number in range(number_of_layer1_neuron):
-                # print(input_bias_vector)
+
                 activation_layer1[neuron_layer1_number] = find_net(data,
                                                                    input_weights_vector[neuron_layer1_number],
                                                                    input_bias_vector[neuron_layer1_number])
