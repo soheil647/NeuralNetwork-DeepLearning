@@ -10,12 +10,13 @@ from keras.activations import softmax
 from keras.optimizers import adam
 from keras.losses import sparse_categorical_crossentropy
 
-# from sklearn import
+from sklearn.neural_network import BernoulliRBM
+from sklearn.decomposition import PCA
 
 
 def NN_with(x_train, y_train, nouron_number_layer1, nouron_number_layer2, batch_size, epoch):
     my_model = Sequential()
-    my_model.add(Dense(nouron_number_layer1, activation='relu', input_shape=(784,)))
+    my_model.add(Dense(nouron_number_layer1, activation='relu', input_shape=(128,)))
     my_model.add(Dense(nouron_number_layer2, activation='relu'))
     my_model.add(Dropout(0.3))
     my_model.add(Dense(10, activation=softmax))
@@ -23,8 +24,22 @@ def NN_with(x_train, y_train, nouron_number_layer1, nouron_number_layer2, batch_
     trained_model = my_model.fit(x_train, y_train, batch_size=batch_size, epochs=epoch, validation_split=0.2)
     return trained_model, my_model
 
+def NN_with_rbm(x_train, x_test):
+    my_model = BernoulliRBM(n_components=128)
+    rbm_fit = my_model.fit(x_train)
+    x_train = my_model.transform(x_train)
+    x_test = my_model.transform(x_test)
+    return x_train, x_test
 
-def my_nn(nouron_number_layer1, nouron_number_layer2, batch_size, epoch):
+def NN_with_PCA(x_train, x_test):
+    pca = PCA(n_components=128)
+    pca_fit = pca.fit_transform(x_train)
+    x_train = pca.transform(x_train)
+    x_test = pca.transform(x_test)
+    return x_train , x_test
+
+
+def my_nn(nouron_number_layer1, nouron_number_layer2, batch_size, epoch, method):
     print("\n\n\n Network With layer1 of: ", nouron_number_layer1, "Nourons and layer2 of: ", nouron_number_layer2, "and Batch_size: ", batch_size, "And Epoch: ", epoch)
     (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 
@@ -38,6 +53,10 @@ def my_nn(nouron_number_layer1, nouron_number_layer2, batch_size, epoch):
     x_test = np.array(x_test).reshape(10000, 28 * 28)
 
     start_time = time.time()
+    if method == "PCA":
+        x_train, x_test = NN_with_PCA(x_train, x_test)
+    if method == "RBM":
+        x_train, x_test = NN_with_rbm(x_train, x_test)
     trained_model, my_model = NN_with(x_train, y_train, nouron_number_layer1, nouron_number_layer2, batch_size, epoch)
     print("Trained finished in: ", time.time() - start_time)
     history = trained_model.history
@@ -82,11 +101,6 @@ def my_nn(nouron_number_layer1, nouron_number_layer2, batch_size, epoch):
     plt.show()
 
 
-my_nn(70, 10, 32, 30)
-my_nn(128, 30, 32, 30)
-my_nn(784, 128, 32, 30)
-#
-#
-my_nn(128, 50, 32, 30)
-my_nn(128, 50, 64, 30)
-my_nn(128, 50, 256, 30)
+my_nn(128, 30, 64, 30, "PCA")
+my_nn(128, 30, 64, 30, "RBM")
+my_nn(128, 30, 64, 30, "PCA")
