@@ -60,7 +60,7 @@ def my_nn(nouron_number_layer1, nouron_number_layer2, batch_size, epoch, method)
     trained_model, my_model = NN_with(x_train, y_train, nouron_number_layer1, nouron_number_layer2, batch_size, epoch)
     print("Trained finished in: ", time.time() - start_time)
     history = trained_model.history
-    test_loss, test_acc = my_model.evaluate(x_test, y_test, verbose=2)
+    test_loss, test_acc = my_model.evaluate(x_test, y_test, verbose=1)
     print('\nTest accuracy:', test_acc)
     print('\nTest loss:', test_loss)
 
@@ -78,8 +78,6 @@ def my_nn(nouron_number_layer1, nouron_number_layer2, batch_size, epoch, method)
     plt.plot(history['accuracy'])
     plt.plot(history['val_accuracy'])
     plt.legend(['acc', 'val_acc'])
-
-    plt.show()
 
     from sklearn.metrics import confusion_matrix
     test_prediction = my_model.predict_classes(x_test)
