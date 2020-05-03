@@ -12,8 +12,10 @@ def find_weight(inputs_matrix, outputs_matrix):
 
 def compare_inputs_outputs(inputs_array, outputs_array, weight_array):
     for i in range(len(inputs_array)):
+        # print(inputs_array[i])
+        # print(outputs_array, "\n\n")
         print("Pattern number ", i, end=" ")
-        if np.all(np.sign(inputs_array[i] * weight_array) == outputs_array[i]):
+        if np.all(np.sign(inputs_array[i] * weight_array) == outputs_array):
             print("True")
         else:
             print("False")
@@ -29,30 +31,69 @@ def lose_3_value():
     return pattern
 
 
+def noise_3_value():
+    pattern = []
+    pattern.append(np.matrix([1, -1, -1, 1]))
+    pattern.append(np.matrix([-1, 1, -1, 1]))
+    pattern.append(np.matrix([-1, -1, 1, 1]))
+    pattern.append(np.matrix([-1, -1, -1, -1]))
+    return pattern
+
+
 def iterative_net(inputs_pattern, tests_pattern):
     weight = find_weight(inputs_pattern, inputs_pattern)
-    compare_inputs_outputs(inputs_pattern, inputs_pattern, weight)
-    print(weight)
+    print(weight, "\n")
+    last_result = []
 
     for i in range(len(tests_pattern)):
         result_patterns = []
-        result_patterns.append([0, 0, 0, 0])
-        result_patterns.append([0, 0, 1, 0])
-        new_pattern = tests_pattern[i] * weight
-        print(new_pattern, "\n")
+        new_pattern = np.sign(tests_pattern[i] * weight)
         while not np.all(new_pattern == inputs_pattern):
             result_patterns.append(np.array(new_pattern).reshape(4,))
             new_pattern = np.sign(new_pattern * weight)
-            print(np.array(new_pattern).reshape(4,))
-            print(np.array(result_patterns))
-            print(np.array(new_pattern).reshape(4,) in np.array(result_patterns))
-            if np.array(new_pattern).reshape(4,) in np.array(result_patterns):
-                print("Repeated pattern")
+            if check_repeated_results(result_patterns, new_pattern):
+                print("Repeated pattern for Pattern: ", i)
                 break
-        print("\n")
+        last_result.append(np.array(new_pattern).reshape(4,))
+    print(last_result)
+    compare_inputs_outputs(np.array(last_result), inputs_pattern, weight)
+
+
+def check_repeated_results(results, new):
+    for i in range(len(results)):
+        if np.all(np.array(results) == np.array(new).reshape(4,)):
+            return True
+    return False
+
+
+def create_random_index(indx):
+    x = np.arange(indx)
+    np.random.shuffle(x)
+    return x
+
+
+def hopfeild_net(inputs_pattern, tests_pattern):
+    weight = find_weight(inputs_pattern, inputs_pattern)
+    weight = np.array(weight)
+    print(weight, "\n")
+    last_result = []
+    for i in range(len(tests_pattern)):
+        x = np.array(tests_pattern[i]).reshape(4,)
+        y = x
+        indx = create_random_index(len(y))
+        for j in indx:
+            y[j] = np.sign(x[j] + np.sum(y * weight.transpose()[j]))
+        last_result.append(y)
+    print(last_result)
+    compare_inputs_outputs(np.matrix(last_result), inputs_pattern, weight)
+
 
 s = []
 s0 = [1, 1, 1, -1]
 s.append(np.matrix([1, 1, 1, -1]))
 
 iterative_net(np.matrix(s0), lose_3_value())
+iterative_net(np.matrix(s0), noise_3_value())
+
+hopfeild_net(np.matrix(s0), lose_3_value())
+hopfeild_net(np.matrix(s0), noise_3_value())
