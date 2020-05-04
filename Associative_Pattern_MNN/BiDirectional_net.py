@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 
 x_layer = [([0, 7], [0, 8], [1, 7], [1, 8], [2, 7], [2, 8], [3, 7], [3, 8], [4, 7], [4, 8], [5, 6], [5, 7], [5, 8],
@@ -78,6 +80,17 @@ def print_character(array):
     print()
 
 
+def show_character(array):
+    for i in range(len(array)):
+        for j in range(len(array[i])):
+            if array[i][j] == 1:
+                print("#", end=' ')
+            else:
+                print(".", end=' ')
+        print()
+    print()
+
+
 def create_patterns(number_of_patterns, patterns, shape):
     patterns_array = []
     for i in range(number_of_patterns):
@@ -95,7 +108,7 @@ def find_weight(inputs_matrix, outputs_matrix):
     return weight_matrix
 
 
-def bam_net(test_patterns_x = "", test_patterns_y=""):
+def bam_net(test_patterns_x, test_patterns_y):
     inputs = create_patterns(2, x_layer, (18, 16))
     outputs = create_patterns(2, y_layer, (8, 35))
     weight = find_weight(inputs, outputs)
@@ -104,20 +117,40 @@ def bam_net(test_patterns_x = "", test_patterns_y=""):
     compare_inputs_outputs_y_to_x(inputs, outputs, weight)
     last_result_y = []
     last_result_x = []
-    # for i in range(len(test_patterns_x)):
-    #     x = test_patterns_x[i]
-    #     y = test_patterns_y[i]
-    #
-    #     for j in range(len(test_patterns_y)):
-    #         y[j] = np.sign(np.sum(y * weight.transpose()[j]))
-    #     last_result_y.append(y)
-    #
-    #     for j in range(len(test_patterns_x)):
-    #         x[j] = np.sign(np.sum(x * weight()[j]))
-    #     last_result_x.append(x)
-    #
-    # print("X Patterns are: ", last_result_x)
-    # print("Y Patterns are: ", last_result_y)
+    test_patterns_x = create_patterns(2, test_patterns_x, (18, 16))
+    test_patterns_y = create_patterns(2, test_patterns_y, (8, 35))
+    for i in range(len(test_patterns_x)):
+        x = test_patterns_x[i]
+        y = test_patterns_y[i]
+
+        for j in range(len(test_patterns_y)):
+            t = y
+            y[j] = np.sign(np.sum(x * np.array(weight).transpose()[j]))
+            print(np.all(t == y))
+        last_result_y.append(y)
+
+        for j in range(len(test_patterns_x)):
+            x[j] = np.sign(np.sum(np.matrix(y) * weight[j].transpose()))
+        last_result_x.append(x)
+
+    compare_inputs_outputs_x_to_y(last_result_x, outputs, weight)
+    compare_inputs_outputs_y_to_x(inputs, last_result_y, weight)
+    # show_character(np.array(last_result_x[0]).reshape(18, 16))
+    # show_character(np.array(last_result_x[1]).reshape(18, 16))
+    # show_character(np.array(last_result_y[0]).reshape(8, 35))
+    # show_character(np.array(last_result_y[1]).reshape(8, 35))
 
 
-bam_net()
+def noise_inputs_oututs(inputs_pattern, outputs_pattern, percent):
+    input_noise_pattern = []
+    output_noise_pattern = []
+    for i in range(len(inputs_pattern)):
+        random_elements_input = random.sample(inputs_pattern[i], k=int(len(inputs_pattern[i])*percent))
+        random_elements_output = random.sample(outputs_pattern[i], k=int(len(outputs_pattern[i])*percent))
+        input_noise_pattern.append(tuple(x for x in inputs_pattern[i] if x not in random_elements_input))
+        output_noise_pattern.append(tuple(x for x in outputs_pattern[i] if x not in random_elements_output))
+    return input_noise_pattern, output_noise_pattern
+
+
+noise_input, noise_output = noise_inputs_oututs(x_layer, y_layer, 0.1)
+bam_net(noise_input, noise_output)

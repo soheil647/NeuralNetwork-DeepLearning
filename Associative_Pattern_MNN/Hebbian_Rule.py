@@ -89,25 +89,27 @@ output_patterns = [([0, 1], [1, 0], [1, 2], [2, 0], [2, 1], [2, 2], [3, 0], [3, 
 inputs = create_patterns(3, input_patterns, (9, 7))
 outputs = create_patterns(3, output_patterns, (5, 3))
 weight = find_weight(inputs, outputs)
+# print(weight)
 
-print("Finding outputs from inputs without noise and lose: ")
-compare_inputs_outputs(inputs, outputs, weight)
+# print("Finding outputs from inputs without noise and lose: ")
+# compare_inputs_outputs(inputs, outputs, weight)
 
-print("Finding outputs from inputs with 20% noise: ")
-inputs_with_noise_20 = add_noise(20, inputs)
-compare_inputs_outputs(inputs_with_noise_20, outputs, weight)
-
-print("Finding outputs from inputs with 40% noise: ")
-inputs_with_noise_40 = add_noise(40, inputs)
-compare_inputs_outputs(inputs_with_noise_40, outputs, weight)
-
-print("Finding outputs from inputs with 20% lose: ")
-inputs_with_lose_20 = add_lose(20, inputs)
-compare_inputs_outputs(inputs_with_lose_20, outputs, weight)
-
-print("Finding outputs from inputs with 40% lose: ")
-inputs_with_lose_40 = add_lose(40, inputs)
-compare_inputs_outputs(inputs_with_lose_40, outputs, weight)
+# print("Finding outputs from inputs with 20% noise: ")
+# inputs_with_noise_20 = add_noise(20, inputs)
+# compare_inputs_outputs(inputs_with_noise_20, outputs, weight)
+#
+# print("Finding outputs from inputs with 40% noise: ")
+# inputs_with_noise_40 = add_noise(40, inputs)
+# compare_inputs_outputs(inputs_with_noise_40, outputs, weight)
+#
+# print("Finding outputs from inputs with 20% lose: ")
+# inputs_with_lose_20 = add_lose(20, inputs)
+# compare_inputs_outputs(inputs_with_lose_20, outputs, weight)
+#
+# print("Finding outputs from inputs with 40% lose: ")
+# for i in range(10):
+#     inputs_with_lose_40 = add_lose(40, inputs)
+#     compare_inputs_outputs(inputs_with_lose_40, outputs, weight)
 
 print("Maximum noise for generating output: ")
 for i in range(10):

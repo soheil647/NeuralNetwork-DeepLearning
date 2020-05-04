@@ -49,19 +49,19 @@ def iterative_net(inputs_pattern, tests_pattern):
         result_patterns = []
         new_pattern = np.sign(tests_pattern[i] * weight)
         while not np.all(new_pattern == inputs_pattern):
-            result_patterns.append(np.array(new_pattern).reshape(4,))
+            result_patterns.append(np.array(new_pattern).reshape(4, ))
             new_pattern = np.sign(new_pattern * weight)
             if check_repeated_results(result_patterns, new_pattern):
                 print("Repeated pattern for Pattern: ", i)
                 break
-        last_result.append(np.array(new_pattern).reshape(4,))
+        last_result.append(np.array(new_pattern).reshape(4, ))
     print(last_result)
     compare_inputs_outputs(np.array(last_result), inputs_pattern, weight)
 
 
 def check_repeated_results(results, new):
     for i in range(len(results)):
-        if np.all(np.array(results) == np.array(new).reshape(4,)):
+        if np.all(np.array(results) == np.array(new).reshape(4, )):
             return True
     return False
 
@@ -78,7 +78,7 @@ def hopfeild_net(inputs_pattern, tests_pattern):
     print(weight, "\n")
     last_result = []
     for i in range(len(tests_pattern)):
-        x = np.array(tests_pattern[i]).reshape(4,)
+        x = np.array(tests_pattern[i]).reshape(4, )
         y = x
         indx = create_random_index(len(y))
         for j in indx:
@@ -92,8 +92,8 @@ s = []
 s0 = [1, 1, 1, -1]
 s.append(np.matrix([1, 1, 1, -1]))
 
-iterative_net(np.matrix(s0), lose_3_value())
-iterative_net(np.matrix(s0), noise_3_value())
+# iterative_net(np.matrix(s0), lose_3_value())
+# iterative_net(np.matrix(s0), noise_3_value())
 
 hopfeild_net(np.matrix(s0), lose_3_value())
 hopfeild_net(np.matrix(s0), noise_3_value())
