@@ -1,3 +1,4 @@
+import copy
 import random
 
 import numpy as np
@@ -96,7 +97,7 @@ def create_patterns(number_of_patterns, patterns, shape):
     for i in range(number_of_patterns):
         patterns_array.append(create_new_input(shape, -1))
         create_character(patterns[i], patterns_array[i])
-        # print_character(patterns_array[i])
+        print_character(patterns_array[i])
         patterns_array[i] = patterns_array[i].flatten()
     return patterns_array
 
@@ -108,49 +109,67 @@ def find_weight(inputs_matrix, outputs_matrix):
     return weight_matrix
 
 
-def bam_net(test_patterns_x, test_patterns_y):
+def bam_net():
     inputs = create_patterns(2, x_layer, (18, 16))
     outputs = create_patterns(2, y_layer, (8, 35))
+    test_patterns_x = noise_inputs_outputs(inputs, 30)
+    test_patterns_y = noise_inputs_outputs(outputs, 30)
+    print_character(np.array(test_patterns_x[0]).reshape(18, 16))
+    print_character(np.array(test_patterns_x[1]).reshape(18, 16))
+    print_character(np.array(test_patterns_y[0]).reshape(8, 35))
+    print_character(np.array(test_patterns_y[1]).reshape(8, 35))
     weight = find_weight(inputs, outputs)
-    print(weight)
+    print(weight, "\n")
+    print("Compare True Inputs to True Outputs to check the model")
+    print("Getting outputs from inputs:")
     compare_inputs_outputs_x_to_y(inputs, outputs, weight)
+    print("Getting inputs from outputs:")
     compare_inputs_outputs_y_to_x(inputs, outputs, weight)
+    print()
     last_result_y = []
     last_result_x = []
-    test_patterns_x = create_patterns(2, test_patterns_x, (18, 16))
-    test_patterns_y = create_patterns(2, test_patterns_y, (8, 35))
-    for i in range(len(test_patterns_x)):
-        x = test_patterns_x[i]
-        y = test_patterns_y[i]
 
-        for j in range(len(test_patterns_y)):
-            t = y
-            y[j] = np.sign(np.sum(x * np.array(weight).transpose()[j]))
-            print(np.all(t == y))
+    for i in range(len(test_patterns_x)):
+        x = copy.deepcopy(list(test_patterns_x[i]))
+        y = copy.deepcopy(list(test_patterns_y[i]))
+
+        for j in range(len(y)):
+            y[j] = activation(np.sum(x * np.array(weight).transpose()[j]), j, x)
         last_result_y.append(y)
 
-        for j in range(len(test_patterns_x)):
+        for j in range(len(x)):
             x[j] = np.sign(np.sum(np.matrix(y) * weight[j].transpose()))
         last_result_x.append(x)
 
+    print("Getting outputs from inputs:")
     compare_inputs_outputs_x_to_y(last_result_x, outputs, weight)
+    print("Getting inputs from outputs:")
     compare_inputs_outputs_y_to_x(inputs, last_result_y, weight)
-    # show_character(np.array(last_result_x[0]).reshape(18, 16))
-    # show_character(np.array(last_result_x[1]).reshape(18, 16))
-    # show_character(np.array(last_result_y[0]).reshape(8, 35))
-    # show_character(np.array(last_result_y[1]).reshape(8, 35))
+    show_character(np.array(last_result_x[0]).reshape(18, 16))
+    show_character(np.array(last_result_x[1]).reshape(18, 16))
+    show_character(np.array(last_result_y[0]).reshape(8, 35))
+    show_character(np.array(last_result_y[1]).reshape(8, 35))
 
 
-def noise_inputs_oututs(inputs_pattern, outputs_pattern, percent):
-    input_noise_pattern = []
-    output_noise_pattern = []
+def activation(result, j, x):
+    if result < 0:
+        return -1
+    elif result > 0:
+        return 1
+    elif result == 0:
+        return x[j]
+
+
+def noise_inputs_outputs(inputs_pattern, percent):
+    output_noise = []
     for i in range(len(inputs_pattern)):
-        random_elements_input = random.sample(inputs_pattern[i], k=int(len(inputs_pattern[i])*percent))
-        random_elements_output = random.sample(outputs_pattern[i], k=int(len(outputs_pattern[i])*percent))
-        input_noise_pattern.append(tuple(x for x in inputs_pattern[i] if x not in random_elements_input))
-        output_noise_pattern.append(tuple(x for x in outputs_pattern[i] if x not in random_elements_output))
-    return input_noise_pattern, output_noise_pattern
+        noise_pattern = copy.deepcopy(inputs_pattern[i])
+        for j in range(len(noise_pattern)):
+            a = np.random.randint(1, 100)
+            if a < percent:
+                noise_pattern[j] = -noise_pattern[j]
+        output_noise.append(noise_pattern)
+    return output_noise
 
 
-noise_input, noise_output = noise_inputs_oututs(x_layer, y_layer, 0.1)
-bam_net(noise_input, noise_output)
+bam_net()
