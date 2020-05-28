@@ -9,6 +9,7 @@ class DataPreProcess:
         self.raw_data_path = raw_data_path
         self.process_data_path = process_data_path
         self.features = ['pollution', 'dew', 'temp', 'press', 'wnd_dir', 'wnd_spd', 'snow', 'rain']
+        # self.features = ['pollution', 'dew', 'temp', 'press', 'wnd_dir_NE', 'wnd_dir_NW', 'wnd_dir_SE', 'wnd_dir_cv', 'wnd_dir_nan', 'wnd_spd', 'snow', 'rain']
 
     def prepare_data(self):
         # load data
@@ -51,7 +52,7 @@ class DataPreProcess:
             i += 1
         pyplot.show()
 
-    def prepare_data_for_time_series(self):
+    def prepare_data_for_time_series(self, time_from_past, time_for_future):
         # convert series to supervised learning
         def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
             n_vars = 1 if type(data) is list else data.shape[1]
@@ -87,6 +88,10 @@ class DataPreProcess:
         encoder = LabelEncoder()
         values[:, 4] = encoder.fit_transform(values[:, 4])
 
+        # One hot Encode
+        # dataset = pd.concat([dataset, pd.get_dummies(dataset['wnd_dir'], prefix='wnd_dir', dummy_na=True)], axis=1).drop(['wnd_dir'], axis=1)
+
+        # values = dataset.values
         # ensure all data is float
         values = values.astype('float32')
 
@@ -95,14 +100,18 @@ class DataPreProcess:
         scaled = scaler.fit_transform(values)
 
         # frame as supervised learning
-        reframed = series_to_supervised(scaled, 1, 1)
+        reframed = series_to_supervised(scaled, time_from_past, time_for_future)
 
         # drop columns we don't want to predict
         reframed.drop(reframed.columns[[9, 10, 11, 12, 13, 14, 15]], axis=1, inplace=True)
-        print(reframed.head(10))
+        # print(reframed.head(10))
         # print(reframed)
+        with pd.option_context('display.max_rows', 10, 'display.max_columns', 50):  # more options can be specified also
+            print(reframed)
+        # reframed.to_csv('dataset.csv')
+        return reframed, scaler
 
-    def do_action(self):
+    def do_action(self, time_from_past, time_for_future):
         self.prepare_data()
         # self.plot_data()
-        self.prepare_data_for_time_series()
+        return self.prepare_data_for_time_series(time_from_past, time_for_future)
