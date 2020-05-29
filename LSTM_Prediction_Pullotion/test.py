@@ -9,7 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM, GRU, RNN
+from keras.layers import LSTM, GRU, SimpleRNN
 import time
 
 
@@ -76,9 +76,9 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
 
 # design network
 model = Sequential()
-model.add(GRU(50, input_shape=(train_X.shape[1], train_X.shape[2])))
+model.add(SimpleRNN(50, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
-model.compile(loss='mae', optimizer='adagrad', metrics=['accuracy'])
+model.compile(loss='mse', optimizer='adagrad', metrics=['accuracy'])
 # fit network
 start = time.time()
 history = model.fit(train_X, train_y, epochs=20, batch_size=64, validation_split=0.2, verbose=2,
@@ -138,6 +138,6 @@ for i in range(len(timestampStr_12)):
     # print(timestampStr_24[i], ": ", 'Predicted: ', inv_yhat[j + 12], ' Real: ', inv_y[j + 12])
     j += 24
 table_txt = t.get_string()
-with open('GRU_ADAgrad_MAE.txt', 'w') as file:
+with open('RNN_ADAgrad_MSE.txt', 'w') as file:
     file.write(table_txt)
 # print(t)
