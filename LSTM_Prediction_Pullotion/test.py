@@ -4,13 +4,16 @@ from matplotlib import pyplot
 from pandas import read_csv, date_range
 from pandas import DataFrame
 from pandas import concat
+from sklearn.impute import KNNImputer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense
-from keras.layers import LSTM, GRU, SimpleRNN
+from keras.layers import LSTM, GRU, SimpleRNN, Average
 import time
+import numpy as np
+import pandas as pd
 
 
 # convert series to supervised learning
@@ -40,6 +43,40 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 
 # load dataset
 dataset = read_csv('pollution.csv', header=0, index_col=0)
+
+# MAke 20 percent of each column miss
+for key, value in dataset.iteritems():
+    dataset.loc[dataset[key].sample(frac=.2).index, key] = np.nan
+
+print(dataset['dew'].isna().sum())
+dataset[pd.isnull(dataset['wnd_dir'])]= 'NaN'
+print(dataset)
+
+# dataset = dataset[:15000]
+# print(dataset)
+
+# find one hour of day in week
+# random = np.random.randint(0, 23)
+# random_day = np.random.randint(1, 31)
+# dataset = dataset.iloc[random::24, :]
+# dataset = dataset.iloc[random_day::31, :]
+
+
+def find_corolation(df):
+    import pandas as pd
+    pd.set_option('display.max_rows', 500)
+    pd.set_option('display.max_columns', 500)
+    pd.set_option('display.width', 1000)
+    df = DataFrame(df)
+    df['wnd_dir'] = df['wnd_dir'].astype('category').cat.codes
+    print(df.corr())
+
+
+# find_corolation(dataset)
+
+# Feature Selection : select 2
+# dataset = dataset[['pollution', 'dew', 'wnd_dir']]
+
 values = dataset.values
 # integer encode direction
 encoder = LabelEncoder()
@@ -52,16 +89,20 @@ scaled = scaler.fit_transform(values)
 # specify the number of lag hours
 n_hours = 11
 n_features = 8
+
+df = DataFrame(scaled)
+imputer = KNNImputer(n_neighbors=5)
+df_filled = imputer.fit_transform(df)
+print(df_filled)
+
 # frame as supervised learning
 reframed = series_to_supervised(scaled, n_hours, 1)
-print(reframed.shape)
 print(reframed)
-
 # split into train and test sets
 values = reframed.values
-split = 12000
+split = int(len(dataset.index) * 0.8)
 train = values[:split, :]
-test = values[split:split+3000, :]
+test = values[split:, :]
 
 # split into input and outputs
 n_obs = n_hours * n_features
@@ -78,12 +119,41 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
 model = Sequential()
 model.add(SimpleRNN(50, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
-model.compile(loss='mse', optimizer='adagrad', metrics=['accuracy'])
+model.compile(loss='mae', optimizer='rmsprop', metrics=['mse'])
 # fit network
 start = time.time()
 history = model.fit(train_X, train_y, epochs=20, batch_size=64, validation_split=0.2, verbose=2,
                     shuffle=False)
 print("Elapsed Time for fitiing: ", time.time()-start)
+
+##################################################
+# fusion models
+# n_members = 3
+# models = list()
+# for i in range(n_members):
+#     model1 = Sequential()
+#     model1.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2]), recurrent_dropout=0.3))
+#     model1.add(Dense(1))
+#     model1.compile(loss='mae', optimizer='rmsprop', metrics=['mse'])
+#     history1 = model1.fit(train_X, train_y, epochs=100, batch_size=64, validation_split=0.2, verbose=2, shuffle=False)
+#     models.append(model1)
+# # make a prediction
+# yhat = [model.predict(train_X) for model in models]
+# yhat = np.array(yhat)
+# yhat = np.mean(yhat)
+# print(yhat)
+# train_X = train_X.reshape((train_X.shape[0], n_hours * n_features))
+# # invert scaling for forecast
+# inv_yhat = concatenate((yhat, train_X[:, -7:]), axis=1)
+# inv_yhat = scaler.inverse_transform(inv_yhat)
+# inv_yhat = inv_yhat[:, 0]
+# # invert scaling for actual
+# train_y = train_y.reshape((len(train_y), 1))
+# inv_y = concatenate((train_y, train_X[:, -7:]), axis=1)
+# inv_y = scaler.inverse_transform(inv_y)
+# inv_y = inv_y[:, 0]
+#####################################################################
+
 
 # plot history
 pyplot.plot(history.history['loss'], label='train')
@@ -92,23 +162,36 @@ pyplot.legend()
 pyplot.show()
 
 # plot history
-pyplot.plot(history.history['accuracy'], label='train')
-pyplot.plot(history.history['val_accuracy'], label='validation')
-pyplot.legend()
-pyplot.show()
+# pyplot.plot(history.history['accuracy'], label='train')
+# pyplot.plot(history.history['val_accuracy'], label='validation')
+# pyplot.legend()
+# pyplot.show()
 
 # make a prediction
 yhat = model.predict(test_X)
 test_X = test_X.reshape((test_X.shape[0], n_hours * n_features))
 # invert scaling for forecast
-inv_yhat = concatenate((yhat, test_X[:, -7:]), axis=1)
+inv_yhat = concatenate((yhat, test_X[:, -2:]), axis=1)
 inv_yhat = scaler.inverse_transform(inv_yhat)
 inv_yhat = inv_yhat[:, 0]
 # invert scaling for actual
 test_y = test_y.reshape((len(test_y), 1))
-inv_y = concatenate((test_y, test_X[:, -7:]), axis=1)
+inv_y = concatenate((test_y, test_X[:, -2:]), axis=1)
 inv_y = scaler.inverse_transform(inv_y)
 inv_y = inv_y[:, 0]
+
+# make prediction low data
+# yhat = model.predict(train_X)
+# train_X = train_X.reshape((train_X.shape[0], n_hours * n_features))
+# # invert scaling for forecast
+# inv_yhat = concatenate((yhat, train_X[:, -7:]), axis=1)
+# inv_yhat = scaler.inverse_transform(inv_yhat)
+# inv_yhat = inv_yhat[:, 0]
+# # invert scaling for actual
+# train_y = train_y.reshape((len(train_y), 1))
+# inv_y = concatenate((train_y, train_X[:, -7:]), axis=1)
+# inv_y = scaler.inverse_transform(inv_y)
+# inv_y = inv_y[:, 0]
 
 # plot history
 pyplot.plot(inv_yhat, 'bo', label='predict')
@@ -120,24 +203,25 @@ pyplot.show()
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 print('Test RMSE: %.3f' % rmse)
 
-
+time = '2011-05-18 00:00:' + str(1)
 dates_12 = date_range('2011-05-17 12:00:00', periods=3000)
-dates_24 = date_range('2011-05-18 00:00:00', periods=3000)
+dates_24 = date_range(time, periods=1400)
 timestampStr_12 = dates_12.strftime("%Y-%m-%d %H:%M:%S")
 timestampStr_24 = dates_24.strftime("%Y-%m-%d %H:%M:%S")
 
 from prettytable import PrettyTable
+
 t = PrettyTable(['Date Hour 12', 'Predicted 12', 'Real 12', 'Date Hour 0', 'Predicted 0', 'Real 0'])
-j = 1
-for i in range(len(timestampStr_12)):
+j = 0
+for i in range(len(timestampStr_24)):
     if j > 3000:
         break
-    t.add_row([timestampStr_12[i], inv_yhat[j], inv_y[j], timestampStr_24[i], inv_yhat[j + 12], inv_y[j + 12]])
+    t.add_row([timestampStr_24[i], inv_yhat[j + 24], inv_y[j + 24]])
     # t.add_row([timestampStr_24[i], inv_yhat[j + 12], inv_y[j + 12]])
     # print(timestampStr_12[i], ": ", 'Predicted: ', inv_yhat[j], ' Real: ', inv_y[j], end='  ')
     # print(timestampStr_24[i], ": ", 'Predicted: ', inv_yhat[j + 12], ' Real: ', inv_y[j + 12])
     j += 24
 table_txt = t.get_string()
-with open('RNN_ADAgrad_MSE.txt', 'w') as file:
-    file.write(table_txt)
+# with open('GRU_RMSprop_MAE_Weekly_Series.txt', 'w') as file:
+#     file.write(table_txt)
 # print(t)
