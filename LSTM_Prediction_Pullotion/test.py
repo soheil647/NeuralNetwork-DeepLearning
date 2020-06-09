@@ -43,7 +43,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 
 # load dataset
 dataset = read_csv('pollution.csv', header=0, index_col=0)
-
+dataset_no_miss = read_csv('pollution.csv', header=0, index_col=0)
 # MAke 20 percent of each column miss
 for key, value in dataset.iteritems():
     dataset.loc[dataset[key].sample(frac=.2).index, key] = np.nan
@@ -86,17 +86,41 @@ values = values.astype('float32')
 # normalize features
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled = scaler.fit_transform(values)
+
 # specify the number of lag hours
 n_hours = 11
 n_features = 8
 
+# Fill Missing Data
 df = DataFrame(scaled)
-imputer = KNNImputer(n_neighbors=5)
-df_filled = imputer.fit_transform(df)
-print(df_filled)
+print(df.mean())
+df = df.fillna(df.mean())
+print(df)
+
+# find Mean Square Error
+values = dataset_no_miss.values
+# integer encode direction
+encoder = LabelEncoder()
+values[:, 4] = encoder.fit_transform(values[:, 4])
+# ensure all data is float
+values = values.astype('float32')
+# normalize features
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled = scaler.fit_transform(values)
+# Mean Square Error
+df_new = DataFrame(scaled)
+
+print("pollution MSE: ", mean_squared_error(df.iloc[:, 0], df_new.iloc[:, 0]))
+print("dew MSE: ", mean_squared_error(df.iloc[:, 1], df_new.iloc[:, 1]))
+print("temp MSE: ", mean_squared_error(df.iloc[:, 2], df_new.iloc[:, 2]))
+print("press MSE: ", mean_squared_error(df.iloc[:, 3], df_new.iloc[:, 3]))
+print("wnd_dir: ", mean_squared_error(df.iloc[:, 4], df_new.iloc[:, 4]))
+print("wnd_speed MSE: ", mean_squared_error(df.iloc[:, 5], df_new.iloc[:, 5]))
+print("snow MSE: ", mean_squared_error(df.iloc[:, 6], df_new.iloc[:, 6]))
+print("rain MSE: ", mean_squared_error(df.iloc[:, 7], df_new.iloc[:, 7]))
 
 # frame as supervised learning
-reframed = series_to_supervised(scaled, n_hours, 1)
+reframed = series_to_supervised(df.values, n_hours, 1)
 print(reframed)
 # split into train and test sets
 values = reframed.values
@@ -117,7 +141,7 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
 
 # design network
 model = Sequential()
-model.add(SimpleRNN(50, input_shape=(train_X.shape[1], train_X.shape[2])))
+model.add(GRU(50, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
 model.compile(loss='mae', optimizer='rmsprop', metrics=['mse'])
 # fit network
@@ -171,16 +195,16 @@ pyplot.show()
 yhat = model.predict(test_X)
 test_X = test_X.reshape((test_X.shape[0], n_hours * n_features))
 # invert scaling for forecast
-inv_yhat = concatenate((yhat, test_X[:, -2:]), axis=1)
+inv_yhat = concatenate((yhat, test_X[:, -7:]), axis=1)
 inv_yhat = scaler.inverse_transform(inv_yhat)
 inv_yhat = inv_yhat[:, 0]
 # invert scaling for actual
 test_y = test_y.reshape((len(test_y), 1))
-inv_y = concatenate((test_y, test_X[:, -2:]), axis=1)
+inv_y = concatenate((test_y, test_X[:, -7:]), axis=1)
 inv_y = scaler.inverse_transform(inv_y)
 inv_y = inv_y[:, 0]
 
-# make prediction low data
+# # make prediction low data
 # yhat = model.predict(train_X)
 # train_X = train_X.reshape((train_X.shape[0], n_hours * n_features))
 # # invert scaling for forecast
